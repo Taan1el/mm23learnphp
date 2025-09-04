@@ -1,47 +1,64 @@
 <?php
 
-$bool = true && false; //false
-var_dump($bool);
+$num = 5;
+if ($num > 5) {
+    var_dump ("Bigger than 5");
+}  elseif ($num === 5) {
+    var_dump ("Equal to 5");
+} else {
+    var_dump ("Smaller than 5");
+} 
 
-$bool = true || false; //true
-var_dump($bool);
+$day = date("N", strtotime("04.09.2025"));
+var_dump($day);
+if ($day == 1) {
+    var_dump("Esmaspäev");
 
-$bool = !true; //false
-var_dump($bool);
+} elseif ($day == 2) {
+    var_dump("Teisipäev");
 
-$bool = 10 > 5; //true
-var_dump($bool);
+} elseif ($day == 3) {
+    var_dump("Kolmapäev");
 
-$bool = 10 < 5; //false
-var_dump($bool);
+} elseif ($day == 4) {
+    var_dump("Neljapäev");
 
-$bool = 10 < 10; //false
-var_dump($bool);
+} elseif ($day == 5) {
+    var_dump("Reede");
 
-$bool = 10 > 10; //false
-var_dump($bool);
+} elseif ($day == 6) {
+    var_dump("Laupäev");
 
-$bool = 10 >= 10; //true
-var_dump($bool);
+} elseif ($day == 7) {
+    var_dump("Pühapäev");
 
-$bool = 10 <= 10; //true
-var_dump($bool);
+} else {
+    var_dump("Vale päev");
+}
 
-$bool = 10 == 10; //true
-var_dump($bool);
-
-$bool = 10 == "10"; //true
-var_dump($bool);
-
-$bool = 10 === "10"; //false
-var_dump($bool);
-
-$bool = 10 != 10; //false
-var_dump($bool);
-
-$bool = 10 !== 10; //true
-var_dump($bool);
-
-$bool = (true && false || true && !false) && true; //true
-var_dump($bool);
-
+switch ($day) {
+    case 1:
+        var_dump("Esmaspäev");
+        break;
+    case 2:
+        var_dump("Teisipäev");
+        break;
+    case 3:
+        var_dump("Kolmapäev");
+        break;
+    case 4:
+        var_dump("Neljapäev");
+        break;
+    case 5:
+        var_dump("Reede");
+        break;
+    case 6:
+        var_dump("Laupäev");
+        break;
+    case 7:
+        var_dump("Pühapäev");
+        break;
+    default:
+        var_dump("Vale päev");
+        break;
+}
