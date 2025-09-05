@@ -1,46 +1,37 @@
 <?php
 
-//for($i=0; $i<10; $i++){
-//    var_dump($i);
-//}
-
-//for($i=10; $i>0; $i--){
-//    var_dump($i);
-//}
-
-//for($i=1; $i<10_000_000; $i*=2){   
-//    var_dump($i);
-//}
-
-$current = date('s');
-var_dump($current);
-
-//while($current<59){
-// var_dump($current);
-// $current = (int)date('s');
-//}
-
-$i = 10;
-
-while($i>10){
-    var_dump("while");
+function sayHello(){
+    var_dump("Hello");
 }
 
-do {
-    var_dump("do while");
-} while($i>10);
+sayHello();
 
-$array =["Apples", "Bananas", "Cherries"];
-foreach($array as $value){
-    var_dump($value);
+function sayHelloToMe($name="Nameless"){
+    var_dump("Hello $name");
 }
 
-$array =[
-    "name" => "Taaniel",
-    "age" => 18,
-    "isMale" => true,
-];
-foreach($array as $key => $value){
-    var_dump($key, $value);
+sayHelloToMe("Taaniel");
+sayHelloToMe("Tarvin");
+sayHelloToMe("Teet");
+sayHelloToMe("Tõnu");
+sayHelloToMe("Tõnis");
+sayHelloToMe();
+
+function sayNameAndAge($name, $age){
+    var_dump("Hello $name, you are $age years old");
 }
 
+sayNameAndAge("Taaniel", 18);
+sayNameAndAge("Tarvin", 22);
+sayNameAndAge("Teet", 24);
+sayNameAndAge("Tõnu", 26);  
+sayNameAndAge("Tõnis", 28);
+
+function recursion($i){
+    if($i < 11){
+        var_dump($i);
+        recursion($i + 1);
+    }
+}
+
+recursion(1);
