@@ -33,7 +33,7 @@ if ($day == 1) {
     var_dump("Pühapäev");
 
 } else {
-    var_dump("Vale päev");
+    var_dump("PUHKEpäev");
 }
 
 switch ($day) {
@@ -59,6 +59,6 @@ switch ($day) {
         var_dump("Pühapäev");
         break;
     default:
-        var_dump("Vale päev");
+        var_dump("puhkepäev");
         break;
 }
