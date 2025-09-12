@@ -52,23 +52,38 @@ class Box {
     public function __invoke(...$args) {
         var_dump('invoking object as function');
     }
+
+     public function __call($name, $args) {
+        var_dump("calling object method $name with value", $args);
+    }
 }
 
 class MetalBox extends Box {
     public $material = 'steel';
     public $weightPerUnit = 2;
-    public function weight() {
-        return $this->volume() * $this->weightPerUnit;
-    }
-
-    public function __call($name, $args) {
-        var_dump("calling object method $name with value", $args);
-    }
 };
+
+class Cat {
+    use Colorful;
+    use Smelly;
+}
+
+trait Colorful {
+    public $color = 'red';
+    public function whatColor() {
+        return "I am $this->color";
+    }
+}
 
 function makeBox() {
     $box1 = new Box(1,2,3);
-    var_dump($box1);
+    var_dump($box1->potato);
+    $box1->potato = 'yum';
+    var_dump($box1->potato);
+}
+
+trait Smelly {
+    public $smell;
 }
 
 $box1 = new Box();
@@ -76,5 +91,3 @@ $box1 = new Box();
 unset($box1);
 $box1 = 1;
 var_dump('end of box program');
-
-
