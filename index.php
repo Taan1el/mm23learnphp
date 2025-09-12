@@ -1,20 +1,15 @@
-<?php
-$name = "Taaniel";
-?>  
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Hello <?=$name?></h1>
-    <ul>
-        <?php for($i = 0; $i < 10; $i++): ?>
-            <li>Item <?=$i?></li>
-        <?php endfor ?>
-    </ul>
-</body>
-</html>
+<?php include 'partials/header.php'; ?>
+    <main class="container">
+      <?php include 'partials/hero.php'; ?>
+      <?php include 'partials/featured.php'; ?>
+      <div class="row g-5">
+        <div class="col-md-8">
+          <?php include 'partials/posts.php'; ?>
+        </div>
+        <div class="col-md-4">
+          <?php include 'partials/sidebar.php'; ?>
+        </div>
+      </div>
+    </main>
+<?php include 'partials/footer.php'; ?>
