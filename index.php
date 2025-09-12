@@ -3,12 +3,18 @@
 class Box {
     public $height = 0;
     private $width = 0;
-    public $length = 0;
+    protected $length = 0;
+
+    public static $count = 0;
 
     public function __construct($height=0, $width=0, $length=0) {
         $this->height = $height;
         $this->width = $width;
         $this->length = $length;
+    }
+
+    public static function cool(){
+        var_dump(self::$count);
     }
 
     public function setWidth($width){
@@ -36,3 +42,16 @@ $metalBox = new MetalBox(10, 10, 10);
 var_dump($metalBox);
 var_dump($metalBox->volume());
 var_dump($metalBox->weight());
+
+$box1 = new Box(10, 10, 10);
+$box1::$count = 1;
+var_dump($box1::$count);
+
+$box2 = new Box(10, 10, 10);
+$box2::$count = 1;
+var_dump($box2::$count);
+
+var_dump($Box1::$count);
+Box::cool();
+
+
