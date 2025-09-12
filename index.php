@@ -34,4 +34,3 @@ var_dump($box1->volume());
 $box2 = new Box(40, 50, 60);
 var_dump($box2);
 var_dump($box2->volume());
-
