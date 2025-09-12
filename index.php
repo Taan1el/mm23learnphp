@@ -1,36 +1,38 @@
 <?php
 
 class Box {
-    public $height;
-    public $width;
-    public $length;
+    public $height = 0;
+    private $width = 0;
+    public $length = 0;
 
-    public function __construct($height, $width, $length) {
+    public function __construct($height=0, $width=0, $length=0) {
         $this->height = $height;
         $this->width = $width;
         $this->length = $length;
     }
 
-public function setHeight($height){
-    if(is_numeric($height) && $height > 0){
-        $this->height = $height;
-    } else {
-        throw new Exception("Height must be a positive number.");
+    public function setWidth($width){
+        if(is_numeric($width) && $width > 0){
+            $this->width = $width;
+        } else {
+            throw new Exception('width needs to be number and bigger than 0');
+        }
     }
-}
 
-    public function volume(){
+    public function volume() {
         return $this->height * $this->width * $this->length;
     }
 }
 
-$box1 = new Box(10, 20, 30);
-$box1->setWidth(15);
-$volume1 = $box1->volume();
-var_dump($box1);
-var_dump($volume1);
-var_dump($box1->volume());
+class MetalBox extends Box {
+    public $material = 'steel';
+    public $weightPerUnit = 2;
+    public function weight() {
+        return $this->volume() * $this->weightPerUnit;
+    }
+};
 
-$box2 = new Box(40, 50, 60);
-var_dump($box2);
-var_dump($box2->volume());
+$metalBox = new MetalBox(10, 10, 10);
+var_dump($metalBox);
+var_dump($metalBox->volume());
+var_dump($metalBox->weight());
