@@ -28,6 +28,30 @@ class Box {
     public function volume() {
         return $this->height * $this->width * $this->length;
     }
+    public function __toString() {
+        return "Box: {$this->height} x {$this->width} x {$this->length}";
+    }
+
+    public function __destruct() {
+        var_dump('box destroyed');
+    }
+
+    public function __get($name) {
+        var_dump("getting '$name'");
+        return "awsome value";
+    }
+
+    public function __set($name, $value) {
+        var_dump("setting '$name' to '$value'");
+        $this->$name = $value;
+    }
+
+    public static function __callStatic($name, $args) {
+        var_dump("trying to call static function $name with value", $args);
+    }
+    public function __invoke(...$args) {
+        var_dump('invoking object as function');
+    }
 }
 
 class MetalBox extends Box {
@@ -36,22 +60,21 @@ class MetalBox extends Box {
     public function weight() {
         return $this->volume() * $this->weightPerUnit;
     }
+
+    public function __call($name, $args) {
+        var_dump("calling object method $name with value", $args);
+    }
 };
 
-$metalBox = new MetalBox(10, 10, 10);
-var_dump($metalBox);
-var_dump($metalBox->volume());
-var_dump($metalBox->weight());
+function makeBox() {
+    $box1 = new Box(1,2,3);
+    var_dump($box1);
+}
 
-$box1 = new Box(10, 10, 10);
-$box1::$count = 1;
-var_dump($box1::$count);
+$box1 = new Box();
 
-$box2 = new Box(10, 10, 10);
-$box2::$count = 1;
-var_dump($box2::$count);
-
-var_dump($Box1::$count);
-Box::cool();
+unset($box1);
+$box1 = 1;
+var_dump('end of box program');
 
 
