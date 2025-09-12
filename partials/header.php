@@ -10,7 +10,7 @@
       content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
     />
     <meta name="generator" content="Astro v5.13.2" />
-    <title>Blog Template · Bootstrap v5.3</title>
+    <title><?php $title?></title>
     <link
       rel="canonical"
       href="https://getbootstrap.com/docs/5.3/examples/blog/"
