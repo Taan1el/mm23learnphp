@@ -21,6 +21,7 @@ class AuthController {
     }
 
     public function logout() {
-
+        unset($_SESSION['userID']);
+        header('Location: /');
     }
 }
