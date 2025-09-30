@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
   <head>
@@ -9,7 +10,7 @@
       content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
     />
     <meta name="generator" content="Astro v5.13.2" />
-    <title><?=$title?></title>
+    <title><?php $title?></title>
     <link
       rel="canonical"
       href="https://getbootstrap.com/docs/5.3/examples/blog/"
@@ -98,5 +99,5 @@
     </style>
   </head>
   <body>
-    <?php include __DIR__ . '/theme-toggle.php' ?>
-    <?php include __DIR__ . '/nav.php' ?>
+    <?php include 'theme-toggle.php' ?>
+    <?php include 'nav.php' ?>

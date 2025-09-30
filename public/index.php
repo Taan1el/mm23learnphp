@@ -1,31 +1,25 @@
-<?php
+<?php 
+$title = "Main";
+ $posts = [
+    ['title' => 'Sample blog post', 'date' => 'January 1, 2024', 'author' => 'Mark', 'body' => 'NOT Cool world news!1'],
+    ['title' => 'Another blog post', 'date' => 'December 23, 2024', 'author' => 'Jacob', 'body' => 'NOT More cool world news!2'],
+    ['title' => 'cool blog', 'date' => 'December 17, 2023', 'author' => 'Chris', 'body' => 'NO, Even more cool world news!3'], 
+    ['title' => 'Another blog but cooler', 'date' => 'December 13, 2025', 'author' => 'Bill', 'body' => 'There Are Even more cool world news!4'],
+    ['title' => 'Awsome blog', 'date' => 'December 15, 2026', 'author' => 'Tom', 'body' => 'Even more Bad world news!5'],
+  ];
+?>
 
-if (preg_match('/\.(?:png|jpg|jpeg|gif|css|js)$/', $_SERVER["REQUEST_URI"])) {
-    return false;    // serve the requested resource as-is.
-}
-
-require __DIR__ . '/../helpers.php';
-
-spl_autoload_register(function ($class) {
-    $class = substr($class, 4);
-    require_once __DIR__ . "/../src/$class.php";
-});
-
-require __DIR__ . '/../routes.php';
-
-
-$router = new App\Router($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
-$match = $router->match();
-if($match) {
-    if(is_callable($match['action'])){
-        call_user_func($match['action']);
-    } else if(is_array($match['action'])){
-        $className = $match['action'][0];
-        $controller = new $className();
-        $method = $match['action'][1];
-        $controller->$method();
-    }
-    
-} else {
-    echo '404 page not found';
-}
+<?php include 'partials/header.php'; ?>
+    <main class="container">
+      <?php include 'partials/hero.php'; ?>
+      <?php include 'partials/featured.php'; ?>
+      <div class="row g-5">
+        <div class="col-md-8">
+          <?php include 'partials/posts.php'; ?>
+        </div>
+        <div class="col-md-4">
+          <?php include 'partials/sidebar.php'; ?>
+        </div>
+      </div>
+    </main>
+<?php include 'partials/footer.php'; ?>
