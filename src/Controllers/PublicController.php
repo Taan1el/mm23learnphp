@@ -27,6 +27,17 @@ class PublicController
         view('us', compact('title', 'posts'));
     }
 
+    public function tech() {
+        $title = 'Technology';
+        $posts = [
+            ['title' => 'Tech news 1', 'author' => 'Pets', 'published' => '12.09.2025', 'body' => 'Some tech news 1 body'],
+            ['title' => 'Tech news 2', 'author' => 'Maali', 'published' => '11.09.2025', 'body' => 'Some tech news 2 body'],
+            ['title' => 'Tech news 3', 'author' => 'Annika', 'published' => '10.09.2025', 'body' => 'Some tech news 3 body'],
+            ['title' => 'Tech news 4', 'author' => 'Mats', 'published' => '09.09.2025', 'body' => 'Some tech news 4 body'],
+        ];
+        view('tech', compact('title', 'posts'));
+    }
+
     public function form(){
         view('form');
     }
