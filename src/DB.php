@@ -22,6 +22,7 @@ class DB
 
     public function all($table, $class)
     {
+        $table = $this->identifier($table);
         $stmt = $this->conn->prepare("SELECT * FROM $table");
         $stmt->execute();
 
@@ -32,8 +33,9 @@ class DB
 
     public function find($table, $class, $id)
     {
-        $stmt = $this->conn->prepare("SELECT * FROM $table WHERE id=$id");
-        $stmt->execute();
+        $table = $this->identifier($table);
+        $stmt = $this->conn->prepare("SELECT * FROM $table WHERE id = :id");
+        $stmt->execute(['id' => (int)$id]);
 
         // set the resulting array to associative
         $stmt->setFetchMode(PDO::FETCH_CLASS, $class);
@@ -42,8 +44,10 @@ class DB
 
     public function where($table, $class, $field, $value)
     {
-        $stmt = $this->conn->prepare("SELECT * FROM $table WHERE $field='$value'");
-        $stmt->execute();
+        $table = $this->identifier($table);
+        $field = $this->identifier($field);
+        $stmt = $this->conn->prepare("SELECT * FROM $table WHERE $field = :value");
+        $stmt->execute(['value' => $value]);
 
         // set the resulting array to associative
         $stmt->setFetchMode(PDO::FETCH_CLASS, $class);
@@ -52,39 +56,47 @@ class DB
 
     public function insert($table, $fields)
     {
-        $fieldNames = array_keys($fields);
+        $table = $this->identifier($table);
+        $fieldNames = array_map([$this, 'identifier'], array_keys($fields));
         $fieldNamesText = implode(', ', $fieldNames);
-        $fieldValuesText = implode("', '", $fields);
+        $placeholders = implode(', ', array_map(fn ($field) => ':' . $field, array_keys($fields)));
 
-        $sql = "INSERT INTO $table ($fieldNamesText)
-                VALUES ('$fieldValuesText')";
-        // use exec() because no results are returned
-
-        $this->conn->exec($sql);
+        $sql = "INSERT INTO $table ($fieldNamesText) VALUES ($placeholders)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($fields);
     }
 
     public function update($table, $fields, $id)
     {
-        $updateText = '';
-        foreach ($fields as $name => $value) {
-            $updateText .= "$name='$value',";
+        $table = $this->identifier($table);
+        $updateParts = [];
+        foreach (array_keys($fields) as $name) {
+            $field = $this->identifier($name);
+            $updateParts[] = "$field = :$name";
         }
-        $updateText = substr($updateText, 0, -1);
+        $updateText = implode(', ', $updateParts);
 
-        $sql = "UPDATE $table SET $updateText WHERE id=$id";
+        $sql = "UPDATE $table SET $updateText WHERE id = :id";
+        $fields['id'] = (int)$id;
 
-        // Prepare statement
         $stmt = $this->conn->prepare($sql);
-
-        // execute the query
-        $stmt->execute();
+        $stmt->execute($fields);
     }
 
     public function delete($table, $id)
     {
-        $sql = "DELETE FROM $table WHERE id=$id";
+        $table = $this->identifier($table);
+        $sql = "DELETE FROM $table WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => (int)$id]);
+    }
 
-        // use exec() because no results are returned
-        $this->conn->exec($sql);
+    private function identifier($name)
+    {
+        if (!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $name)) {
+            throw new \InvalidArgumentException('Invalid database identifier');
+        }
+
+        return $name;
     }
 }
