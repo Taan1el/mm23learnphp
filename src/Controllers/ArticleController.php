@@ -20,16 +20,11 @@ class ArticleController
     }
     
     public function store() {
-        do {
-            $name = md5($_FILES['image']['name']. microtime() . rand(PHP_INT_MIN, PHP_INT_MAX));
-            $name .= '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-            $filename = __DIR__ . '/../../public/uploads/' . $name;
-        } while (file_exists($filename));
-        
-        move_uploaded_file($_FILES['image']['tmp_name'], $filename);
+        $this->storeImage($_FILES['image'] ?? null);
+
         $article = new Article();
-        $article->title = $_POST['title'];
-        $article->body = $_POST['body'];
+        $article->title = trim($_POST['title'] ?? '');
+        $article->body = trim($_POST['body'] ?? '');
         $article->save();
         header('Location: /articles');
     }
@@ -56,5 +51,36 @@ class ArticleController
         $article = Article::find($_GET['id']);
         $article->delete();
         header('Location: /articles');
+    }
+
+    private function storeImage($image)
+    {
+        if (!$image || ($image['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+            return null;
+        }
+
+        if (($image['error'] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK || !is_uploaded_file($image['tmp_name'])) {
+            header('Location: /articles/create');
+            exit;
+        }
+
+        $extension = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
+        if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp'], true)) {
+            header('Location: /articles/create');
+            exit;
+        }
+
+        $uploadDir = __DIR__ . '/../../public/uploads/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        do {
+            $name = bin2hex(random_bytes(16)) . '.' . $extension;
+            $filename = $uploadDir . $name;
+        } while (file_exists($filename));
+
+        move_uploaded_file($image['tmp_name'], $filename);
+        return $name;
     }
 }

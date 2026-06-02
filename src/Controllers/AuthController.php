@@ -10,13 +10,16 @@ class AuthController {
     }
 
     public function register() {
-        $user = User::where('email', $_POST['email']);
-        if(isset($user[0]) || !isset($_POST['email']) || $_POST['password'] !== $_POST['password_confirm']) {
+        $email = trim($_POST['email'] ?? '');
+        $password = (string)($_POST['password'] ?? '');
+        $passwordConfirm = (string)($_POST['password_confirm'] ?? '');
+        $user = $email ? User::where('email', $email) : [];
+        if(isset($user[0]) || !$email || !$password || $password !== $passwordConfirm) {
             return header('Location: /register');
         }
         $user = new User();
-        $user->email = $_POST['email'];
-        $user->password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        $user->email = $email;
+        $user->password = password_hash($password, PASSWORD_BCRYPT);
         $user->save();
         header('Location: /login');
     }
@@ -26,15 +29,16 @@ class AuthController {
     }
 
     public function login() {
-        dump($_POST);
-        $user = User::where('email', $_POST['email']);
+        $email = trim($_POST['email'] ?? '');
+        $password = (string)($_POST['password'] ?? '');
+        $user = $email ? User::where('email', $email) : [];
         // if(isset($user[0])) {
         //     $user = $user[0];
         // } else {
         //     $user = null;
         // }
         $user = $user[0] ?? null;
-        if(!$user || !password_verify($_POST['password'], $user->password)) {
+        if(!$user || !password_verify($password, $user->password)) {
            return header('Location: /login');
         }
         $_SESSION['userID'] = $user->id;
